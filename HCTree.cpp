@@ -1,4 +1,4 @@
-include "HCTree.h"
+#include "HCTree.h"
 
 
 
@@ -22,7 +22,7 @@ void HCTree::build(const vector<int>& freqs){
         HCNode* n2 = pq.top();
         pq.pop();
 
-        HCNode* newNode = HCNode(n1->count + n2->count, n1->symbol); //we do not care about the symbol value in this newNode
+        HCNode* newNode = new HCNode(n1->count + n2->count, n1->symbol); //we do not care about the symbol value in this newNode
         newNode->c0 = n1;
         newNode->c1 = n2;
 
@@ -48,9 +48,9 @@ void HCTree::encode(byte symbol, ofstream& out) const{
        HCNode* node = leaves[(int)symbol];
        while( node->p != NULL){
            if( node->p->c0 == node)
-               out.write(0);
+               out.put('0');
            else
-               out.write(1);
+               out.put('1');
         node = node->p;
     }
 }
@@ -66,8 +66,7 @@ int HCTree::decode(ifstream& in) const{
     HCNode *p = root;
     char c;
     while( in.get(c)){
-        int path = stoi(c);
-        if( c == 0)
+        if( c == '0')
             p = root->c0;
         else
             p = root->c1;

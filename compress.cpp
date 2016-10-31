@@ -39,17 +39,7 @@ int main( int argc, char** argv){
     ofstream file;
     file.open(argv[2]);
 
-   /* //fout<<"Encode for each character:\n";
-    for(int i=0; i < freq.size(); i++){ 
-         if(freq[i] !=0 && i != 10 ){
-            file << (char)i << " : ";
-
-            tree->encode((char)i,file);
-            
-      
-    }
-  }/*/
-    string fre;
+     string fre;
     for(int i = 0; i < 256; i++){
         string new_one = to_string(freq[i]);
         fre = new_one + "\n";
@@ -58,10 +48,6 @@ int main( int argc, char** argv){
     char symb;
     while(the_file.get(symb)){
 
-	//	symb = the_file.get();
-      //  cout << symb << endl;
-	//	if(the_file.eof())
-	//		break;
         if((int)symb != 10)
 	    	tree->encode(symb, file);
 	}

@@ -17,10 +17,7 @@ int main( int argc, char** argv){
 
     std::vector<int> freq(256,0);
     
-    int totalChar = 0;
-    
-    // compute frequencies 
-    //
+        
     string freqName;
     for( int i = 0; i < freq.size(); i++){
         getline(file1, freqName);
@@ -36,24 +33,15 @@ int main( int argc, char** argv){
     
     ofstream file;
     file.open(argv[2]);
-    
-   /* if( tree->root->c0 == NULL and tree->root->c1 == NULL){
-        *for( int i= 0; i < freq[tree->root->symbol]; i++)
-            file << tree->root->symbol;
-        return 1;
-    }*/
-    while(1){
+ 
+    while(!file1.eof()){
 	
-		//if(file1.eof())
-		//	break;
-
+	
     int charac = tree->decode(file1);
     if( charac != -1) 
 	    file <<	(char)charac;
     else
         return 1;    
     }
-
-
 
 }

@@ -13,20 +13,19 @@ class BitOutputStream{
 
 public:
 	/*Resets buffer and the bit count*/
-	BitOutputStream(std::ostream & stream): outStream(stream),
-		buffer(0), numBits(0){}
+	BitOutputStream(std::ostream & stream);
 	
 	/*Used to write a bit to the stream*/
-	void addBit(int bit);
+	void addBit(int index);
 	
 	/*Writes header to stream*/
-	void addHeader(int bit);
+	void addHeader(int index);
 	
 	/*Writes a newline to the stream*/
 	void addNL(char nl);
 	
 	/*Flushes output stream*/
-	void clear();
+	void flush();
 
 /*Private member variables*/
 private:
@@ -39,10 +38,6 @@ private:
 	
 	/*For tracking number of bits in stream*/
 	int numBits;
-
-	
-
-
 
 };
 #endif

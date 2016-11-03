@@ -15,9 +15,9 @@ HCTree.o: HCNode.h HCTree.h
 
 HCNode.o: HCNode.h
 
-#BitOutputStream.o: BitOutputStream.h
+BitOutputStream.o: BitOutputStream.h
 
-#BitInputStream.o: BitInputStream.h
+BitInputStream.o: BitInputStream.h
 
 clean:
 	rm -f compress uncompress *.o core*

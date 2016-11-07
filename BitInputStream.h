@@ -10,9 +10,11 @@ class BitInputStream{
         std::istream & in;
 
     public:
-        BitInputStream(std::istream & is) : in(is);
+        BitInputStream(std::istream & is);
         void fill();
         int readBit();
+        char readByte();
+        int readInt();
 
 };
 

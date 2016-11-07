@@ -6,38 +6,42 @@
 #ifndef BITOUTPUTSTREAM_H
 #define BITOUTPUTSTREAM_H
 
-#include <fstream>
 #include <iostream>
 
-class BitOutputStream{
 
-public:
-	/*Resets buffer and the bit count*/
-	BitOutputStream(std::ostream & stream);
-	
-	/*Used to write a bit to the stream*/
-	void addBit(int index);
-	
-	/*Writes header to stream*/
-	void addHeader(int index);
-	
-	/*Writes a newline to the stream*/
-	void addNL(char nl);
-	
-	/*Flushes output stream*/
-	void flush();
+class BitOutputStream{
 
 /*Private member variables*/
 private:
 	
 	/*Our outstream object*/
-	std::ostream & outStream;
+	std::ostream & out;
 	
 	/*Our buffer for I/O*/
-	char buffer;
+	char buf;
 	
 	/*For tracking number of bits in stream*/
-	int numBits;
+	int nbits;
+
+
+public:
+	/*Resets buffer and the bit count*/
+	BitOutputStream(std::ostream & os):out(os),
+	buf(0), nbits(0){}
+;
+	
+	/*Used to write a bit to the stream*/
+	void writeBit(int i);
+	
+    /*Used to write the int value to the stream*/	
+    void writeInt(int i);
+	
+	/*Used to write the last value to the buffer*/
+    void flush_last();
+	
+	/*Flushes output stream*/
+	void flush();
+
 
 };
 #endif

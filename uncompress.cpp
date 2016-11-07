@@ -18,12 +18,13 @@ int main( int argc, char** argv){
     std::vector<int> freq(256,0);
     
         
-    string freqName;
+    BitInputStream bis(file1);
+    int max_size = 0;
     for( int i = 0; i < freq.size(); i++){
-        getline(file1, freqName);
-        freq[i] = stoi(freqName);
-
+        freq[i] = bis.readInt();
+        max_size += freq[i];
     }
+
 
 
 	
@@ -33,15 +34,12 @@ int main( int argc, char** argv){
     
     ofstream file;
     file.open(argv[2]);
- 
-    while(!file1.eof()){
-	
-	
-    int charac = tree->decode(file1);
-    if( charac != -1) 
-	    file <<	(char)charac;
-    else
-        return 1;    
+
+    for( int i = 0; i < max_size; i++){
+        int charac = tree->decode(bis);
+       // cout << "charc = " << charac << endl; 
+        file <<	(char)charac;
     }
+    
 
 }

@@ -1,4 +1,6 @@
 #include "HCTree.h"
+#include <stack>
+#include <string>
 
 void HCTree::build(const vector<int>& freqs){
    
@@ -6,23 +8,23 @@ void HCTree::build(const vector<int>& freqs){
     std::priority_queue<HCNode*,std::vector<HCNode*>, HCNodePtrComp> pq;
     
 	for(int i = 0; i < 256; i++){
-		if(freqs[i] != 0 && i != 10  ){ //10 new line chacracter
+		if(freqs[i] != 0  ){ 
 			HCNode* newNode = new HCNode(freqs[i], (byte)i);
 			pq.push(newNode);
 			leaves[i] = newNode;
-            cout << "freq " << i << " " << freqs[i] << endl;
+            //cout << "freq " << i << " " << freqs[i] << endl;
 
 		}
-       	}
+     }
     
     while( pq.size() > 1){
 
         HCNode* n1 = pq.top();
-        cout<<n1->symbol<<" "<<n1->count<<endl;  
+        //cout<<n1->symbol<<" "<<n1->count<<endl;  
 
         pq.pop();
         HCNode* n2 = pq.top();
-        cout<<n2->symbol<<" "<<n2->count<<endl;  
+        //cout<<n2->symbol<<" "<<n2->count<<endl;  
 
         pq.pop();
 
@@ -37,18 +39,40 @@ void HCTree::build(const vector<int>& freqs){
     }
     
     if(pq.size() != 0){ //case of empty file
-    root = pq.top();
-    cout<<root->symbol<<" "<<root->count<<endl;  
-    pq.pop();	
+        root = pq.top();
+        //cout<<root->symbol<<" "<<root->count<<endl;  
+        pq.pop();	
     }
     
 }
 
-/*
-void HCTree::encode(byte symbol, BitOutputStream& out) const{
+void encode_rec_optimized(HCNode* node, stack<int> &node_p){
+    if(node->p == NULL )
+        return;
 
-  }
-*/
+        if( node->p->c0 == node)
+               node_p.push(0);
+           else
+               node_p.push(1);
+        encode_rec_optimized(node->p, node_p);
+
+}
+
+void HCTree::encode(byte symbol, BitOutputStream& out) const{
+       stack<int> node_p;
+       HCNode* node = leaves[symbol];
+       encode_rec_optimized(node, node_p);
+       
+
+       while(!node_p.empty()){
+         out.writeBit(node_p.top());       
+         node_p.pop();
+       }
+
+
+
+}
+
 
 
 void encode_rec(HCNode* node, ofstream& out){
@@ -69,15 +93,24 @@ void HCTree::encode(byte symbol, ofstream& out) const{
             out << root->symbol;
        }else
         encode_rec(node, out);
-      //out << symbol;
-
 }
 
-/*
 int HCTree::decode(BitInputStream& in) const{
+    HCNode *p = root;
+    int c;
+    while(p->c0 != NULL && p->c1 != NULL){
+        c = in.readBit();
+        if( c == 0)
+            p = p->c0;
+        else if( c == 1)
+            p = p->c1;
+        else
+            return -1;
 
-}*/
+    }
+    return p->symbol;
 
+}
 
 int HCTree::decode(ifstream& in) const{
 

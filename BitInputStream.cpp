@@ -1,27 +1,41 @@
-include "BitInputStream.h"
+#include "BitInputStream.h"
 
+#define BYTE 8
 
 BitInputStream::BitInputStream(std::istream & is) : in(is){
             buf = 0;
-            nbits = 8;
+            nbits = BYTE;
         }
 
 void BitInputStream::fill(){
         buf = in.get();
         nbits = 0;
 }
+/*read the bit value*/
+int BitInputStream::readBit(){
+       
 
-int BitInputSTream::readBit(){
-    
-    if(nbits == 8)
+    if(nbits == BYTE)
         fill();
 
-    int bit = buf & 1;
-    buf = buf >> 1;
+       
     ++nbits;
     
-    return bit;
+    return (buf >> (BYTE - nbits)) & 1;
+
+    
+
+}
+/*return the char value of the Byte*/
+char BitInputStream::readByte(){
+    return in.get();
 }
 
+
+int BitInputStream::readInt(){
+    int i = 0;
+    in.read((char*)&i, sizeof(int));
+    return i;
+}
 
 

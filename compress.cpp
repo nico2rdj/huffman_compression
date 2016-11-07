@@ -2,6 +2,7 @@
 #include <fstream>
 #include "HCNode.h"
 #include "HCTree.h"
+#include "BitOutputStream.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ int main( int argc, char** argv){
 	while(!theFile.eof()){
          
         symbol = theFile.get();
-        cout << symbol << endl;
+        //cout << symbol << endl;
 
         if(theFile.eof())
 			break;
@@ -39,19 +40,19 @@ int main( int argc, char** argv){
     ofstream file;
     file.open(argv[2]);
 
-     string fre;
+    BitOutputStream bos(file);
+    
     for(int i = 0; i < 256; i++){
-        string new_one = to_string(freq[i]);
-        fre = new_one + "\n";
-        file << fre;
+        bos.writeInt(freq[i]);
     }
     char symb;
     while(the_file.get(symb)){
+        if(the_file.eof())
+            return 0;
 
-        if((int)symb != 10)
-	    	tree->encode(symb, file);
-	}
-
-
-
+        tree->encode(symb, bos);
+    }
+    
+    bos.flush_last();
+    
 }

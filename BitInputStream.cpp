@@ -34,7 +34,7 @@ char BitInputStream::readByte(){
 
 int BitInputStream::readInt(){
     int i = 0;
-    in.read((char*)&i, sizeof(int));
+    in.read((char*)&i, 3);
     return i;
 }
 

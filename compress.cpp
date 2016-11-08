@@ -13,19 +13,19 @@ int main( int argc, char** argv){
         return -1;
     }
 
-    ifstream theFile;
-    theFile.open(argv[1], ios::binary);
+    ifstream File1;
+    File1.open(argv[1], ios::binary);
 
     std::vector<int> freq(256,0);
     int symbol;
     
     // compute frequencies 
-	while(!theFile.eof()){
+	while(!File1.eof()){
          
-        symbol = theFile.get();
+        symbol = File1.get();
         //cout << symbol << endl;
 
-        if(theFile.eof())
+        if(File1.eof())
 			break;
       
 		freq[symbol] += 1;
@@ -34,25 +34,26 @@ int main( int argc, char** argv){
     HCTree* tree = new HCTree();
     tree->build(freq);
 
-    ifstream the_file;
-    the_file.open(argv[1], ios::binary);
+    ifstream file1;
+    file1.open(argv[1], ios::binary);
 
-    ofstream file;
-    file.open(argv[2]);
+    ofstream file2;
+    file2.open(argv[2]);
 
-    BitOutputStream bos(file);
+    BitOutputStream bos(file2);
     
     for(int i = 0; i < 256; i++){
         bos.writeInt(freq[i]);
     }
     char symb;
-    while(the_file.get(symb)){
-        if(the_file.eof())
+    while(file1.get(symb)){
+        if(file1.eof())
             return 0;
 
         tree->encode(symb, bos);
     }
     
     bos.flush_last();
+    
     
 }

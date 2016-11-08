@@ -29,7 +29,7 @@ void BitOutputStream::flush_last(){
 /*Write the numbers in the buffer  */
 void BitOutputStream::writeInt(int i){
   
-    out.write((char*)&i, sizeof(int));
+    out.write((char*)&i, 3);
 }
 
 /*
